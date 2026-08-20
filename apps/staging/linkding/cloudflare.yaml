@@ -70,7 +70,7 @@ data:
     
     tunnel: ldthor
 
-    credentials-file: /etc/cloudflared/creds/config.json
+    credentials-file: /etc/cloudflared/creds/credentials.json
 
     # Serves the metrics server under /metrics and the readiness server under /ready
     metrics: 0.0.0.0:2000
