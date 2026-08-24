@@ -28,4 +28,4 @@ spec:
           kind: PrometheusRule
   values:
     grafana:
-      adminPassword: 1234567
+      adminPassword: "1234567"
