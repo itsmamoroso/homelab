@@ -7,7 +7,7 @@ spec:
   interval: 10m0s
   retryInterval: 1m
   timeout: 5m
-  path: ./monitoring/contoller/staging
+  path: ./monitoring/controller/staging
   prune: true
   sourceRef:
     kind: GitRepository
