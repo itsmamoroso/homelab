@@ -28,7 +28,7 @@ spec:
           volumeMounts:
             - mountPath: /etc/linkding/data
               name: linkding-data
-          envFrom:
+          envForm:
             - secretRef:
                 name: secret-linkding
 
