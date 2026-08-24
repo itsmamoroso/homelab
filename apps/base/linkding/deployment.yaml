@@ -30,7 +30,7 @@ spec:
               name: linkding-data
           envForm:
             - secretRef:
-                name: secret-linkding
+               name: secret-linkding
 
       volumes:
         - name: linkding-data
