@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: audiobookshelf
+  name: audiobookshelf
+  namespace: audiobookshelf
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: audiobookshelf
+
+  template:
+    metadata:
+      labels:
+        app: audiobookshelf
+
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+
+      initContainers:
+        - name: permissions
+          image: busybox:1.36
+
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+
+          command:
+            - sh
+            - -c
+            - |
+              chown -R 1000:1000 /config /metadata /audiobooks /podcasts
+              echo "Permissions fixed"
+
+          volumeMounts:
+            - name: core-pvc
+              mountPath: /config
+              subPath: config
+
+            - name: core-pvc
+              mountPath: /metadata
+              subPath: metadata
+
+            - name: audiobook-pvc
+              mountPath: /audiobooks
+
+            - name: podcast-pvc
+              mountPath: /podcasts
+
+      containers:
+        - image: ghcr.io/advplyr/audiobookshelf:2.36.0
+          name: audiobookshelf
+
+          securityContext:
+            allowPrivilegeEscalation: false
+
+          volumeMounts:
+            - mountPath: /config
+              subPath: config
+              name: core-pvc
+
+            - mountPath: /metadata
+              subPath: metadata
+              name: core-pvc
+
+            - mountPath: /audiobooks
+              name: audiobook-pvc
+
+            - mountPath: /podcasts
+              name: podcast-pvc
+
+          envFrom:
+            - configMapRef:
+                name: configmap-abs
+
+      volumes:
+        - name: core-pvc
+          persistentVolumeClaim:
+            claimName: core-pvc
+
+        - name: audiobook-pvc
+          persistentVolumeClaim:
+            claimName: audiobook-pvc
+
+        - name: podcast-pvc
+          persistentVolumeClaim:
+            claimName: podcast-pvc
