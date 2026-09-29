@@ -55,7 +55,7 @@ spec:
               mountPath: /podcasts
 
       containers:
-        - image: ghcr.io/advplyr/audiobookshelf:2.36.0
+        - image: ghcr.io/advplyr/audiobookshelf:2.37.1
           name: audiobookshelf
 
           securityContext:
